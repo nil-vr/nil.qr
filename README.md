@@ -1,4 +1,4 @@
-This repository contains a nil.qr Unity package containing a QrCode component. The QrCode component uses U# code to render a QR codes to tiny textures. The included QrCode material uses a special shader so the textures stay sharp even when they are viewed at very large sizes.
+This repository contains a nil.qr Unity package containing a QrCode component. The QrCode component uses U# code to render QR codes to tiny textures. The included QrCode material uses a special shader so the textures stay sharp even when they are viewed at very large sizes.
 
 # Installation
 
