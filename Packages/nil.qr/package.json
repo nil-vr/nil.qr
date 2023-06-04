@@ -1,0 +1,15 @@
+{
+    "name": "nil.qr",
+    "displayName": "nil.qr",
+    "version": "0.0.1",
+    "unity": "2019.4",
+    "description": "U# QR code generator",
+    "author": {
+        "name": "nil",
+        "url": "https://mas.to/@nil"
+    },
+    "url": "https://github.com/nil-vr/nil.qr",
+    "vpmDependencies": {
+        "com.vrchat.udonsharp": "^1.1.x"
+    }
+}
