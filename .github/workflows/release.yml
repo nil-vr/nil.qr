@@ -51,6 +51,15 @@ jobs:
               data: await fs.readFile(`nil.qr-${name}.zip`),
               name: `nil.qr-${name}.zip`,
             });
+            await github.request({
+              method: "POST",
+              url: release.data.upload_url,
+              headers: {
+                "content-type": "application/json",
+              },
+              data: await fs.readFile("Packages/nil.qr/package.json"),
+              name: "package.json",
+            });
             await github.rest.repos.updateRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
