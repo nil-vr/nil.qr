@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Validate
+        run: |
+          version=$(jq -r .version < Packages/nil.qr/package.json)
+          if [ "${version}" != "${GITHUB_REF_NAME}" ]; then
+            echo "Packages/nil.qr/package.json .version does not match tag name"
+            exit 1
+          fi
+
+      - name: Pack
+        run: |
+          cd Packages/nil.qr
+          zip -r "../../nil.qr-${GITHUB_REF_NAME}.zip" .
+
+      - name: Publish
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require("node:fs/promises");
+
+            const name = context.ref.replace(/^refs\/tags\//, '');
+            const release = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: name,
+              draft: true,
+              generate_release_notes: true,
+            });
+            await github.request({
+              method: "POST",
+              url: release.data.upload_url,
+              headers: {
+                "content-type": "application/zip",
+              },
+              data: await fs.readFile(`nil.qr-${name}.zip`),
+              name: `nil.qr-${name}.zip`,
+            });
+            await github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release.data.id,
+              draft: false,
+              make_latest: true,
+            });
