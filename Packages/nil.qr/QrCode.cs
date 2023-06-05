@@ -1,7 +1,6 @@
 ﻿
 using System;
 using UdonSharp;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +12,7 @@ namespace Nil.Qr
         [NonSerialized]
         bool isOwnTexture;
 
-#if !COMPILER_UDONSHARP
+#if UNITY_EDITOR
         void OnValidate()
         {
             var renderer = this.GetComponent<RawImage>();
@@ -27,10 +26,10 @@ namespace Nil.Qr
                         r = this.gameObject.AddComponent<RawImage>();
                         r.uvRect = new Rect(0, 1, 1, -1);
 
-                        var materialPath = AssetDatabase.GUIDToAssetPath("66793f255fdda214d9802c731a052a82");
+                        var materialPath = UnityEditor.AssetDatabase.GUIDToAssetPath("66793f255fdda214d9802c731a052a82");
                         if (materialPath != null)
                         {
-                            var material = (Material)AssetDatabase.LoadAssetAtPath(materialPath, typeof(Material));
+                            var material = (Material)UnityEditor.AssetDatabase.LoadAssetAtPath(materialPath, typeof(Material));
                             if (material != null)
                             {
                                 r.material = material;
