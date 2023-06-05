@@ -12,7 +12,7 @@ namespace Nil.Qr
         [NonSerialized]
         bool isOwnTexture;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !COMPILER_UDONSHARP
         void OnValidate()
         {
             var renderer = this.GetComponent<RawImage>();
